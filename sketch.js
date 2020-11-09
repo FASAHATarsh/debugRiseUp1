@@ -3,7 +3,7 @@ const World=Matter.World;
 const Bodies=Matter.Bodies;
 var balloon,ball,bg,bg_img;
 var obstacle=[];
-
+var tower=[];
 
 
 function preload(){
@@ -16,8 +16,24 @@ function setup() {
   world=engine.world;
  balloon =new Balloon(300, 550);
   ball = new Ball(300,450,10);
+  //console.log(ball.body);
   bg = createSprite(0,0)
   bg.addImage("background",bg_img);
+  for(var i=0;i<5;i++)
+  {
+    
+
+//   tower[i]=new Obstacle(i*100,50,30,10);
+    //obstacle [i]= new Obstacle(i*100,100,50,10);
+    tower[i]= new Obstacle(270-(i-5),50,100+(i*40),30);
+  //tower[i]= new Obstacle(i*20,10,20,30);
+    
+    //console.log("yes");
+
+  }
+  
+  
+  
 }
 
 function draw() {
@@ -27,10 +43,13 @@ function draw() {
   drawSprites();
   ball.display();
   balloon.display();
-  bringIn();
-  
+ // bringIn();
+ for(var x = 0;x<tower.length;x++)
+ {
+   tower[x].display();
+  // obstacle[x].display();
+ }
 }
-
 function bgLoop()
 {
   bg.velocityY=2;
@@ -39,12 +58,13 @@ function bgLoop()
   }
 }
 
-function bringIn()
+/*function bringIn()
 {
 
     for(var i =0;i<10;i++)
     {
-     obstacle [i]= new Obstacle(i+50,100,10,10);
+     
      obstacle[i].display()
     }
 }
+*/

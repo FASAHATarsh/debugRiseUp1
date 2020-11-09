@@ -4,8 +4,8 @@ class Obstacle{
         var options = {
             'isStatic': false,
             'restitution':0.3,
-            'friction':0.5,
-            'density':1.2,
+            'friction':1.5,
+            'density':0.2,
             
         }
         this.body = Bodies.rectangle(x, y,width,height, options);
