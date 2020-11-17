@@ -2,7 +2,6 @@
 <================================================================================>
 <===================  all copyrights preserved IronArshXS Fasahat   =============>
 <================================================================================>
-
 */
 
 
@@ -18,12 +17,13 @@ const Bodies=Matter.Bodies;
 const Render=Matter.Render;
 
 var balloon,ball,bg,bg_img;
-
-
+var c=300;
+var lay=[];
 // gameStates
 
 var gameState = "l1";
 
+var mode = "start";
 
 // common variable declartion
 
@@ -31,7 +31,7 @@ var gameState = "l1";
     // pyramid structure obs
     var lay1,lay2,lay3,lay4,lay5;
 
-    var slabs,balls;
+    var slabs=[],balls=[];
     
 
 
@@ -72,7 +72,7 @@ function setup()
 
 
 
-    balloon =new Balloon(300, 500);
+    balloon =new Balloon(300, 600);
 
     ball = new Ball(300,450,40);
     
@@ -82,9 +82,9 @@ function setup()
     
     bg.addImage("background",bg_img);
 
-    obs1();
+ // obs1();
 
-    obs2();
+   //obs2();
 
   
 }
@@ -115,53 +115,75 @@ different levels
 
 function obs1()
 {
-
-
-    lay1 = new Quad(300,300,250,20);
-    
-   
-    lay2 = new Quad(300,250,200,20);
-   
-    
-    lay3 = new Quad(300,200,150,20);
-   
-    
-    lay4 = new Quad(300,150,100,20);
-   
-    
-    lay5 = new Quad(300,100,50,20);
-    
-    
-    //console.log("yes");
-
+    for(var i=0;i<5;i++)
+    {
+        lay[i] = new Quad(300,c,c-50,20);
+        c-=50;  
+    }
 }
 
 function obs2()
 {
 
     //this is for slabs and top balls
-
-    
-    
-   for (var i =0; i<20; i++)
+   
+   for (var i =0; i<5; i++)
     {
-        slabs = new Quad(300,50+(i*20),300,10)
-         
-           
+        slabs[i] = new Quad(300,50+(i*20),300,10)
+      //   console.log("in slabs");
+         balls[i] = new Circle(100+(i*20),100,20)
+        // console.log("in balls");
+             
     }
-    for (var x =0; x<10; x++)
-    {
-       balls = new Circle(100+(x*20),100,20)
-         
-          
-    }
-    
 
 }
 // draw function to draw the objects on screen
+function dispobs1()
+{
+    //console.log(lay[0].body);
+    for(var w=0;w<lay.length;w++)
+    {
+        lay[w].display();
+    }
+}
+function dispobs2()
+{
+    for (var x =0; x<slabs.length; x++)
+    {
+        slabs[x].display(); 
+        balls[x].display(); 
+  
+    }
+}
+
+function detectcollision(balloon,obstacle){
+	// balloonBodyPosition=obstacle.body.position
+	// obstacleBodyPosition=balloon.body.position
+
+	// var distance=dist(obstacleBodyPosition.x,obstacleBodyPosition.y,balloonBodyPosition.x,balloonBodyPosition.y)
+    // console.log(distance);
+    // console.log(obstacle.y+balloon.y);
+    // if(distance===obstacle.y+balloon.y-balloon.height/2){
+    //  //   Matter.Body.setStatic(obstacle.body,false);
+    //     console.log("yes")
+    // }
+    console.log(balloon.body.position);
+    console.log(obstacle.body.position);
+    
+    if (balloon.body.position.x-obstacle.body.position.x===balloon.width/2+obstacle.width/2 
+        &&obstacle.body.position.x-balloon.body.position.x===balloon.width/2+obstacle.width/2
+        &&obstacle.body.position.y-balloon.body.position.y===balloon.height/2+obstacle.height/2
+        &&balloon.body.position.y-obstacle.body.position.y===balloon.height/2+obstacle.height/2)
+    {
+        console.log("yes");
+    }
+}
+
 
 function draw() 
 {
+
+
 
     background(0); 
 
@@ -175,31 +197,27 @@ function draw()
 
     balloon.display();
     
-    if (gameState==="l1")
+        dispobs1();
+        detectcollision(balloon.body,lay[0]);
+
+        dispobs2();
+    if(gameState==="l1" && frameCount===100)
     {
-        lay1.display();
+        obs1();  
+        console.log("in 1")
+        gameState="l2";
+    }  
+    if(gameState==="l2" && frameCount===300)
+    {
+        obs2();
+        console.log("in 2")
+       
+    }
 
-        lay2.display();
-
-        lay3.display();
-
-        lay4.display();
+        //dispobs2();
         
-        lay5.display();
-        if(frameCount <500 )
-        {
-       //     console.log("framecount");
-            gameState="l2";
-        }
-    }
-
-    if (gameState==="l2")
-    {
-        balls.display(); 
-    
-        slabs.display(); 
-    }
-
-    
- 
 }
+
+
+
+
